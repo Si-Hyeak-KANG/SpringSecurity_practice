@@ -1,17 +1,17 @@
 package security.security_test.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import security.security_test.model.Member;
 import security.security_test.repository.MemberRepository;
 
 @Controller
-@RequestMapping("")
 public class IndexController {
 
     @Autowired
@@ -60,5 +60,22 @@ public class IndexController {
 
         memberRepository.save(member);
         return "redirect:/login";
+    }
+
+    // 1개 권한을 주고싶을 때 사용
+    @Secured("ROLE_ADMIN")
+    @GetMapping("/info")
+    public @ResponseBody String info() {
+        return "info";
+    }
+
+    // 1개 이상 권한 제공
+    // SecurityConfig 에 .antMatchers("/data/**").access("hasRole('ROLE_MANAGER) or hasRole('ROLE_ADMIN)")
+    // # 을 사용하면 파라미터에 접근 가능
+    // ex) @PreAuthorize("isAuthenticated() and ((#user.name == principal.name) or hasRole('ROLE_ADMIN'))")
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+    @GetMapping("/data")
+    public @ResponseBody String data() {
+        return "data";
     }
 }
