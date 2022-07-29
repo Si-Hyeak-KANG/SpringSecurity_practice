@@ -20,4 +20,7 @@ public class Member {
     private String email;
     private String role;
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    private String provider;
+    private String providerId;
 }
