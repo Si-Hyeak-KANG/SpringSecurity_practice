@@ -15,8 +15,17 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
 
     private Member member;
 
+    private Map<String,Object> attributes;
+
+    // 일반 로그인
     public PrincipalDetails(Member member) {
         this.member = member;
+    }
+
+    // OAuth 회원가입 & 로그인
+    public PrincipalDetails(Member member, Map<String, Object> attributes) {
+        this.member = member;
+        this.attributes = attributes;
     }
 
     // User 의 권한을 리턴

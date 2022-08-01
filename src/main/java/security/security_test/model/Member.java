@@ -1,6 +1,8 @@
 package security.security_test.model;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,7 +12,17 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
+@NoArgsConstructor
 public class Member {
+
+    @Builder
+    public Member(String username, String email, String role, String provider, String providerId) {
+        this.username = username;
+        this.email = email;
+        this.role = role;
+        this.provider = provider;
+        this.providerId = providerId;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
